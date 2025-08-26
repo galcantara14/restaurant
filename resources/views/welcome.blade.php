@@ -134,11 +134,11 @@
                                         <label> Nome </label>
                                         <input type="text" maxlength="300" name="nomeReserva" id="nomeReserva" class="form-control" style="width: 100%; background-color:transparent;" required>
                                         <label> Telefone </label>
-                                        <input type="tel" name="telefoneReserva" id="phone" class="form-control" style="width: 100%; background-color:transparent;" required>
+                                        <input type="tel" name="phone" id="phone" class="form-control" style="width: 100%; background-color:transparent;" required>
                                         <label> Email </label>
                                         <input type="email" name="emailReserva" id="emailReserva" class="form-control" style="width: 100%; background-color:transparent;" required>
                                         <label> Data </label>
-                                        <input type="text" id="datepicker" class="form-control" style="width: 100%; background-color:transparent;" required>
+                                        <input type="text" name="datepicker" id="datepicker" class="form-control" style="width: 100%; background-color:transparent;" required>
                                         <label> Número de Pessoas </label>
                                         <input type="number" name="numPessoasReserva" id="numPessoasReserva" class="form-control" style="width: 100%; background-color:transparent;" min='1' max='10' required>                                
                                     </div>
@@ -146,6 +146,7 @@
                                 <div class="modal-header">
                                     <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" style='background-color: #bf5106; color: #fff;'>Fechar</button>
                                     <button type="submit" class="btn btn-outline-dark" style='background-color: #bf5106; color: #fff;'> Reservar</button>
+                                    <div id="reservaMessage" class="mt-2" style='background-color: #bf5106;'></div>
                                 </div>
                             </form>
                             </div>
@@ -209,21 +210,23 @@
     };
 
     // Configuração do Flatpickr
-
     flatpickr("#datepicker", {
         minDate: "today",
         maxDate: new Date().fp_incr(30), // permite reservas até 1 mês no futuro
-        dateFormat: "d/m/Y",
-        locale: "portuguese",
+        dateFormat: "Y-m-d",
     });
 
 
     document.getElementById('reservaForm').addEventListener('submit', function(e){
-        e.preventDefault(); // evita reload
+    e.preventDefault();
 
         let form = e.target;
         let formData = new FormData(form);
         let token = document.querySelector('input[name="_token"]').value;
+        let messageDiv = document.getElementById('reservaMessage');
+
+        // Limpa a mensagem anterior
+        messageDiv.innerHTML = ''; 
 
         fetch("{{ route('reserva.reserva') }}", {
             method: "POST",
@@ -232,18 +235,37 @@
             },
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok || response.status === 422) {
+                return response.json();
+            } else {
+                return response.text().then(text => {
+                    throw new Error('Erro na requisição! O servidor retornou uma página de erro inesperada.');
+                });
+            }
+        })
         .then(data => {
-            let messageDiv = document.getElementById('reservaMessage');
             if(data.success){
                 messageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
                 form.reset();
             } else {
-                messageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                if(data.errors){
+                    let errorsHtml = '<ul>';
+                    for(const key in data.errors){
+                        data.errors[key].forEach(errorMsg => {
+                            errorsHtml += `<li>${errorMsg}</li>`;
+                        });
+                    }
+                    errorsHtml += '</ul>';
+                    messageDiv.innerHTML = `<div class="alert alert-danger"><strong>Erro de validação:</strong>${errorsHtml}</div>`;
+                } else {
+                    messageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
             }
         })
         .catch(error => {
-            console.log(error);
+            console.error('Falha na comunicação:', error);
+            messageDiv.innerHTML = `<div class="alert alert-danger"><strong>Erro:</strong> ${error.message}</div>`;
         });
     });
 

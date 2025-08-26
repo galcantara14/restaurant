@@ -92,7 +92,7 @@ class menu extends Model{
     // Função para reservar uma mesa
     public function reserva($data, $con){
         
-        $stmt = $con->prepare("INSERT INTO reservas (nome, email, data, qtd_pessoas, telefone) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO reservas (nome, email, data_reserva, qtd_pessoas, telefone) VALUES (?, ?, ?, ?, ?)");
 
         if(!$stmt){
             // Retorna erro caso a preparação falhe
@@ -108,7 +108,7 @@ class menu extends Model{
             $data['pessoas'],
             $data['telefone']
         );
-
+       // var_dump($stmt);
         // Executa
         if($stmt->execute()){
             return true; // sucesso
