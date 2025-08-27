@@ -10,7 +10,7 @@
         ?>
 			
         <title>Restaurant</title>        
-		<link rel="sortcut icon" href=/shortLogo.png type="image/png" />
+		<link rel="sortcut icon" href=/shortLogo2.png type="image/png" />
         <!-- CSRF Token -->
 		<meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
@@ -54,7 +54,6 @@
 
         <style>
             
-            
        
         </style>
         @yield('head')
@@ -80,7 +79,7 @@
             <!-- Paginação -->
             <div class="swiper-pagination"></div>
         </div>
-
+        <!-- Seção Nossa História -->
         <div class="history">
             <div class="row">
                 <div class="text-center">
@@ -117,7 +116,7 @@
                         </button>
                     </div>
 
-                    <!-- Modal -->
+                    <!-- Modal para reservas de mesa -->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -127,7 +126,7 @@
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form id="reservaForm" method="POST" action="{{ route('reserva.reserva') }}">
+                            <form id="reservaForm" method="POST" action="{{ route('reserva') }}">
                                 @csrf
                                 <div class="modal-body">
                                     <div style='color: #fff;'>
@@ -152,6 +151,43 @@
                             </div>
                         </div>
                     </div>
+                    
+
+                    <!-- formulario de contato -->
+                    <div class="contact-form mt-5 mb-5">
+                        <h2 class="text-white">Entre em Contato</h2>
+                        <form action="{{ route('contato') }}" method="post" >
+                             @csrf
+                            <div class="mb-3">
+                                <label for="nome" class="form-label text-white">Nome:</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label text-white">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mensagem" class="form-label text-white">Mensagem:</label>
+                                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-dark" style='background-color: #bf5106; color: #fff;'>Enviar</button>
+                        </form>
+                        <div id="responseMessage" class="mt-3"></div>
+                    </div>
+
+                    <!--
+                     <!-- seção de comentários 
+                    <div id="comments-container">
+                        <h2>Avaliações</h2>
+                        <div id="comment-form">
+                            <input type="text" id="comment-name" placeholder="Seu nome">
+                            <textarea id="comment-text" placeholder="Seu comentário"></textarea>
+                            <button id="post-comment" style="border-radius:8px; background-color: #cc8758; color: #fff;">Comentar</button>
+                        </div>
+                        <div id="comment-list">
+                            <!-- Comentários serão adicionados aqui pelo JavaScript -
+                        </div>
+                    </div>-->
                 </div>
             </div>
         </div>      
@@ -228,7 +264,7 @@
         // Limpa a mensagem anterior
         messageDiv.innerHTML = ''; 
 
-        fetch("{{ route('reserva.reserva') }}", {
+        fetch("{{ route('reserva') }}", {
             method: "POST",
             headers: {
                 "X-CSRF-TOKEN": token
@@ -269,6 +305,60 @@
         });
     });
 
+    // JavaScript para a seção de comentários
+    document.getElementById('post-comment').addEventListener('click', function() {
+        const nameInput = document.getElementById('comment-name');
+        const textInput = document.getElementById('comment-text');
+        const commentList = document.getElementById('comment-list');
+
+        const userName = nameInput.value;
+        const userComment = textInput.value;
+
+        if (userName && userComment) {
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `<strong>${userName}:</strong> ${userComment}`;
+            commentList.prepend(newComment); // Adiciona no topo da lista
+
+            nameInput.value = ''; // Limpa o campo de nome
+            textInput.value = ''; // Limpa o campo de texto
+        } else {
+            alert('Por favor, preencha seu nome e comentário.');
+        }
+    });
+
+    //formulário de contato
+    document.getElementById("contactForm").addEventListener("submit", async function(e) {
+        e.preventDefault(); // não deixa recarregar a página
+
+        let form = e.target;
+        let formData = new FormData(form);
+
+        try {
+            let response = await fetch(form.action, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": form.querySelector('input[name="_token"]').value
+                },
+                body: formData
+            });
+
+            let data = await response.json();
+
+            let msgDiv = document.getElementById("responseMessage");
+            if (data.success) {
+                msgDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                form.reset(); // limpa o formulário
+            } else {
+                msgDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            }
+
+        } catch (error) {
+            document.getElementById("responseMessage").innerHTML =
+                `<div class="alert alert-danger">Erro inesperado. Tente novamente.</div>`;
+            console.error(error);
+        }
+    });
 
     </script>
 

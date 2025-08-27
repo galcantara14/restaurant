@@ -1,8 +1,11 @@
 .body-welcome {
-  background-color: #703310;
   margin: 0;
   padding: 30px 0;
   font-family: 'Arial black', sans-serif;
+  background-color: #703310;
+  color: #fff;
+  background: radial-gradient(circle, #703310, #cc8758);
+
 }
 
 .body-navMenu {
@@ -80,7 +83,7 @@ h2, h4 {
 }
 
 nav {
-  background-color: #bf5106;
+  background-color: #703310;
   color: #fff;
 }
 
@@ -111,7 +114,6 @@ nav {
 } 
 
 .history {
-  background-color: #703310;
   color: #fff;
   padding: 50px 20px;
   text-align: center;
@@ -140,14 +142,14 @@ nav {
 }
 
 .flatpickr-calendar {
-  background: #3b1c0b;
+  background: #cc8758;
   color: #fff;
   border: none;
 }
 
 .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-  background: #f17c1c;
-  color: white;
+  background: #3b1c0b;
+  color: #fff;
 }
 
 .flatpickr-day:hover {
@@ -161,4 +163,33 @@ nav {
   border: 1px solid grey;
   font-weight: bold;
   text-align: center;
+}
+
+#comments-container {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+#comment-form input,
+#comment-form textarea {
+  width: calc(100% - 10px);
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: #cc8758;
+  border-radius:8px;
+}
+
+#comment-list {
+  margin-top: 20px;
+}
+
+.comment {
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.comment strong {
+  color: #3b1c0b;
 }

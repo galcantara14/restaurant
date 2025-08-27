@@ -2,7 +2,7 @@
 @section('title', 'Cardapio')
 
 @section('head')
-  <link rel="sortcut icon" href=/shortLogo.png type="image/png" />
+  <link rel="sortcut icon" href=/shortLogo2.png type="image/png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- CSS -->
   <link href="/css/app.css" rel="stylesheet">

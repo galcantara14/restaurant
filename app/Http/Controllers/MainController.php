@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\dataBase;
 use App\Models\menu;
+use App\Models\contato;
 
 class MainController extends Controller
 {
@@ -78,7 +79,7 @@ class MainController extends Controller
                 echo json_encode(['success' => true, 'message' => 'Reserva realizada com sucesso!']);
             } else {
                 echo json_encode(['success' => false, 'message' => $reserva]); // $reserva pode conter erro do mysqli
-            }//fim tratamento dos dados
+            }
             
         } catch (\Illuminate\Validation\ValidationException $e) {
           
@@ -95,5 +96,30 @@ class MainController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }   
+    }
+
+    public function contato(Request $request) {
+
+        $contato = new contato();
+        //Validação dos dados 
+        $validated = $request->validate([
+            'nome' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'mensagem' => 'required|string|min:10',
+        ]);
+
+        //tratar os dados se necessário
+        $validated['nome'] = htmlspecialchars(strip_tags(trim($validated['nome'])));
+        $validated['mensagem'] = htmlspecialchars(strip_tags(trim($validated['mensagem'])));
+
+        // Lógica para enviar o e-mail
+        // (Certifique-se que seu arquivo .env está configurado para envio de e-mail)
+        
+        $envio = $contato->enviarEmail($validated);
+        if ($envio === true) {
+            return response()->json(['success' => true, 'message' => 'Mensagem enviada com sucesso!']);
+        } else {
+            return response()->json(['success' => false, 'message' => $envio]); // $envio pode conter erro do mail
+        }
     }
 }

@@ -13,7 +13,7 @@
         ?>
 			
         <title>Restaurant</title>        
-		<link rel="sortcut icon" href=/shortLogo.png type="image/png" />
+		<link rel="sortcut icon" href=/shortLogo2.png type="image/png" />
         <!-- CSRF Token -->
 		<meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
@@ -58,14 +58,13 @@
 </head>
 <body class="body-navMenu">
     <!-- NAV -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow " style="background-color: #bf5106;">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow ">
         <a href="{{ url('/') }}">
             <img src="/shortLogo2.png" alt="Logo" class="navbar-brand" style="height: 100px; width: 100px;">
         </a>
         <div class="collapse navbar-collapse justify-content-between align-items-center">
             <ul class="navbar-nav">
                 <a href="{{ route('cardapio') }}" class="nav-link text-white">Cardápio</a>
-                <a href="{{ url('/reservas') }}" class="nav-link text-white">Reservas</a>
             </ul>
         </div>          
     </nav>

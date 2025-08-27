@@ -15,13 +15,19 @@ use App\Http\Controllers\MainController;
 Route::group(['middleware'=>'auth'],function(){
     
 });
-
+// Rota para EXIBIR o cardápio
 Route::get('/menus/cardapio', [MainController::class, 'cardapioGet'])
     ->name('cardapio');
 
-
+// Rota para a página inicial
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/reserva', [mainController::class, 'reserva'])->name('reserva.reserva');
+// Rota para PROCESSAR os dados do formulário de reserva
+Route::post('/reserva', [mainController::class, 'reserva'])
+    ->name('reserva');
+
+// Rota para RECEBER os dados do formulário de contato
+Route::post('/contato', [mainController::class, 'contato'])
+    ->name('contato');
