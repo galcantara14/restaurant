@@ -18,7 +18,11 @@ Um sistema em desenvolvimento para gestão de restaurante, com funcionalidades v
 ### 🛠️ Área do Funcionário  
 - [ ] **Dashboard interno** para reservas em tempo real  
 - [ ] **Gestão de dúvidas/contatos** de clientes  
-- [ ] **Relatórios e estatísticas**  
+- [ ] **Relatórios e estatísticas**
+
+## 🎥 Demonstração
+
+![Demonstração do site](public/restaurant.gif)
 
 ---
 
@@ -30,6 +34,9 @@ Um sistema em desenvolvimento para gestão de restaurante, com funcionalidades v
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
 </div>  
+
+
+
 
 
 
