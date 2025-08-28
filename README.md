@@ -31,6 +31,11 @@ Um sistema em desenvolvimento para gestão de restaurante, com funcionalidades v
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
 </div>  
 
+## 🎥 Demonstração
+
+![Demonstração do site](public/restaurant.gif)
+
+
 
 
 
