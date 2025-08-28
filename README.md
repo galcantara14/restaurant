@@ -22,7 +22,7 @@ Um sistema em desenvolvimento para gestão de restaurante, com funcionalidades v
 
 ## 🎥 Demonstração
 
-![Demonstração do site](public/restaurant.gif)
+![Demonstração do site](public/demo.json)
 
 ---
 
